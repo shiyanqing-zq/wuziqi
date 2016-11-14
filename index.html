@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>五子棋</title>
+		<script src="jquery.min.js"></script>
+		<script src="wuziqi.js"></script>
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_vvf22lwenmxnu3di.css" />
+		<style>
+		*{
+			margin :0;
+			padding:0;
+			font-family: "微软雅黑";
+		}
+		body{
+			width:100%;
+			height:100%;
+			background-image: url(images/11.jpg);
+			overflow:hidden;
+			position:relative;
+		}
+			#canvas{
+				border:1px solid #000;
+				position: absolute;
+				left:360px;
+				background-image: url(images/bj1.jpg);
+				background-size:100% ;
+			}
+			#box{
+				width:100%;
+				height:100%;
+				position: absolute;
+			}
+			input{
+			width:100px;
+			height:35px;
+			border:none;
+			}
+		#kaishi{
+			position: absolute;
+			left:150px;
+			top:400px;
+		}
+		#cxks{
+			position: absolute;
+			left:150px;
+			top:450px;
+		}
+		#jsyx{
+			position: absolute;
+			left:150px;
+			top:500px;
+		}
+		#canvas-z, #canvas-y {
+		  background-image: url(images/E-_js_11.png);
+		  background-size: 200px 200px;
+		  background-repeat: no-repeat;
+		  margin-top: 20px;
+		  margin-bottom: 20px;
+		}
+		#canvas-z{
+			position: absolute;
+			left:100px;
+			top:30px
+		}
+		#canvas-y{
+			position: absolute;
+			right:100px;
+			top:30px
+		}
+		.jr{
+			width:1500px;
+			height:1000px;
+			background: url(images/22.jpg);
+			position: absolute;
+			top:0;
+			transition:all 1.5s;
+		}
+		.jrdh{
+			top:800px;
+		}
+		.jr .bj{
+			width:1200px;
+			height:600px;
+			position: absolute;
+			left:83px;
+			top:30px;
+		}
+		.jr h1{
+			font-family:"隶书";
+			font-size:88px;
+			position: absolute;
+			left:240px;
+			top:60px;
+		}
+		.jr input{
+			width:150px;
+			height:50px;
+			border:none;
+			border-radius:12px;
+		}
+		.jr #jmks{
+			position: absolute;
+			left:600px;
+			top:200px;
+		}
+		.jr #jmjs{
+			position: absolute;
+			left:600px;
+			top:280px;
+		}
+		.jr #jmnd{
+			position: absolute;
+			left:600px;
+			top:360px;
+		}
+		.jr #jmsy{
+			position: absolute;
+			left:600px;
+			top:440px;
+		}
+		
+		.yxjs{
+			width:450px;
+			height:400px;
+			background: url(images/22.jpg);
+			position: absolute;
+			left:460px;
+			top:130px;
+			text-align: center;
+			transition:all 1s;
+			transform:translateY(600px);
+		}
+		.active{
+			transform:translateY(0px);
+		}
+		.yxjs p{
+			font-family:"隶书";
+			font-size:70px;
+			margin-top:88px;
+		}
+		#zlyj{
+			width:130px;
+			height:55px;
+			margin-right:60px;
+			margin-top:80px;
+		}
+		#tc{
+			width:130px;
+			height:55px;			
+		}
+		.yxjs span{
+			color:red;
+			cursor: pointer;
+			float:right;
+			margin-right:-10px;
+			margin-top:-13px;
+			font-size:20px;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<canvas id="canvas-z" class="canvas" width="200" height="200">......</canvas>
+			<canvas id="canvas" width="645" height="645">
+				<img id="img" src="images/黑白棋_03.png" alt="" />
+				<audio id="audio" src="c.wav"></audio>
+				.....
+			</canvas>
+			<canvas id='canvas-y' class="canvas" width="200" height="200">......</canvas>
+			<input id="kaishi" type="button" value="查看棋谱" />
+			<input id="cxks" type="button" value="重新开始" />
+			<input id="jsyx" type="button" value="结束游戏" />
+			<div class="yxjs">
+				<span class="iconfont">&#xe6a1;</span>
+				<p>你赢了！</p>
+				<input id="zlyj" type="button" value="再来一局" />
+				<input id="tc" type="button" value="退出游戏" />
+			</div>
+		</div>
+		<!--查看棋谱-->
+			<!--<div id="check">
+				<div id="close">+</div>
+			</div>-->
+		<div class="jr">
+			<img class="bj" src="images/ksjm.jpg" alt="" />
+			<h1>五子棋</h1>
+			<input id="jmks" type="button" value="开始游戏" />
+			<input id="jmjs" type="button" value="游戏介绍" />
+			<input id="jmnd" type="button" value="游戏难度" />
+			<input id="jmsy" type="button" value="游戏声音" />
+		</div>
+		
+	</body>
+	<script>
+//		var canvas=document.getElementById("canvas");
+//		var ctx=canvas.getContext('2d');
+//		设置画布宽高会清除画布中的像素
+
+//  ctx.beginPath();
+//  ctx.moveTo(300,100);
+//  ctx.quadraticCurveTo(60,60,100,300);
+//  ctx.quadraticCurveTo(50,200,100,200);
+//  ctx.quadraticCurveTo(100,240,60,250);
+//  ctx.quadraticCurveTo(120,240,130,200);
+//  ctx.quadraticCurveTo(250,200,250,125);
+//  ctx.quadraticCurveTo(250,50,150,50);
+//  ctx.stroke();
+// function tupian(){
+// 	var img=document.getElementById('img');
+// 	console.log(img)
+//
+// 	 ctx.drawImage(img,0,0,344,342,0,0,30,30);
+// 	 ctx.restore()
+// }
+// tupian();
+//function huazi(){
+//	ctx.save();
+//	
+//}
+//		ctx.beginPath();
+//		for(var i=0;i<22;i++){
+//			ctx.moveTo(24.5,24.5+i*29.8);
+//			ctx.lineTo(620.5,24.5+i*29.8);
+//			
+//			ctx.moveTo(24.5+i*29.8,24.5);
+//			ctx.lineTo(24.5+i*29.8,620.5);
+//		}		
+//		ctx.closePath();		
+//		ctx.stroke();
+//		
+//		function qizi(color){
+//			ctx.save();
+//			ctx.translate(200,200);
+//			ctx.beginPath();
+//			var g=ctx.createRadialGradient(-2.25,-4.5,0,0,0,17.5);			
+//			if(color==="black"){
+//				g.addColorStop(0.1,"#eee");
+//				g.addColorStop(0.5,"black");
+//				g.addColorStop(1,"black");
+//				ctx.fillStyle=g;
+//			}else{
+//				g.addColorStop(0.1,"#fff");
+//				g.addColorStop(0.5,"#eee");
+//				g.addColorStop(1,"#999");
+//				ctx.fillStyle=g;
+//			}
+//				
+//				ctx.arc(0,0,14,0,Math.PI*2)
+//				ctx.fill();
+//				ctx.closePath();
+//				ctx.restore();
+//		}
+//		qizi()
+	</script>
+</html>
